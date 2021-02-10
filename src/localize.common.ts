@@ -1,4 +1,4 @@
-import { File, knownFolders, path } from '@nativescript/core';
+import { File, knownFolders, path, Utils } from '@nativescript/core';
 import { vsprintf } from 'sprintf-js';
 import { localizeNative } from './localizenative';
 
@@ -55,7 +55,8 @@ export function loadLocaleJSON(jsonFileOrData: string | object, shouldFlatten = 
 
 export function l(key: string, ...args: string[]): string {
     if (currentLocales) {
-        return vsprintf(currentLocales[key] || key, args);
+        const result = currentLocales[key];
+        return vsprintf(!Utils.isNullOrUndefined(result) ? result : key, args);
     } else {
         return localizeNative(key, ...args);
     }
